@@ -63,10 +63,9 @@ class DialogBox extends Frame{//класс на основе формы для �
         if (evt.target==b_serializeD) //Кнопка для сериализации
         {
           try{ 
-            fos= new FileOutputStream("tmpserial");//Создаем файл для 
-            //сериализации
-            oos=new ObjectOutputStream(fos);//Создаем потоковую переменную для
-            //записи в файл объектов
+            
+            fos= new FileOutputStream("tmpserial");//Создаем файл для сериализации
+            oos=new ObjectOutputStream(fos);//Создаем потоковую переменную для записи в файл объектов
             oos.writeObject(bexitD);  //Пишем в файл кнопки и текстовое поле
             oos.writeObject(b_serializeD);
             oos.writeObject(b_deserializeD);
