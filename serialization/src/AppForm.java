@@ -12,19 +12,21 @@ public class AppForm extends Frame{ //Форма основного класса
   Button bexit=new Button("Exit");//Кнопка для выхода
   Button b_serialize=new Button("Serial");//Кнопка для сериализации
   Button b_deserialize=new Button("Deserialize");//Кнопка для десериализации
+  Button serializeSecret=new Button("serialize hidden field");
   TextField tf=new TextField("100");
 
   AppForm(String s){ //Конструктор основной формы
     super(s);
     setLayout(null);
     add(bexit);
-    add(b_serialize);
     add(b_deserialize);
+    add(serializeSecret);
     add(tf);
     setBackground(new Color(100,20,150));
     bexit.setBounds(10,20,60,20);
     b_serialize.setBounds(10,40,100,20);
     b_deserialize.setBounds(10,60,100,20);
+    serializeSecret.setBounds(10,80,100,20);
     tf.setBounds(10,100,200,20);
   }
   public boolean action(Event evt, Object ob) {//Обработчик событий
@@ -34,12 +36,12 @@ public class AppForm extends Frame{ //Форма основного класса
     else
       if (evt.target==b_deserialize) {//Запуск десериализации
 
-        File  fl=new File("tmpserial");//Проверяем, есть ли файл с записанными объектами
+        File  fl=new File("tmpserial");
         if (fl.exists())
         {tf.setText("FileExists");
           DialogBox d= new DialogBox();//Создаем новую форму на базе класса DialogBox
           try{ 
-            fis= new FileInputStream("tmpserial");//Создание потоковой переменной для низкоуровневого ввода
+            fis= new FileInputStream("secret");//Создание потоковой переменной для низкоуровневого ввода
             ois=new ObjectInputStream(fis);//Создание потоковой переменной для высокоуровневого ввода
             d.bexitD= (Button) ois.readObject();  //Читаем на новую форму объекты. При чтении выполняем приведение типа
             d.bexitD.setBounds(10,30,100,20);
@@ -62,22 +64,25 @@ public class AppForm extends Frame{ //Форма основного класса
         } else
         {tf.setText("FileNitExists");}
         return true;}
-      else
-        if (evt.target==b_serialize)//Активировано событие сериализации
-        {
-          try{ 
-            fos= new FileOutputStream("tmpserial");
-            oos=new ObjectOutputStream(fos);//Запись в файл кнопок и текстового поля
-            oos.writeObject(bexit);  
-            oos.writeObject(b_serialize);
-            oos.writeObject(b_deserialize);
-            oos.writeObject(tf);
-            fos.close();
-            return true;
-          }
-          catch(Exception err)
-          {System.out.println("Error:"+err);}
-        }
+
+    //********  SERIALIZE SECRET ************///
+    if (evt.target==serializeSecret){
+      File  flSecret=new File("secret");
+      try{ 
+        AppForm secretForm = new AppForm("Secret");
+        secretForm.tf.setText("SECRET");
+        fos= new FileOutputStream("secret");
+        oos= new ObjectOutputStream(fos);
+        oos.writeObject(secretForm.bexit);  
+        oos.writeObject(secretForm.b_serialize);
+        oos.writeObject(secretForm.b_deserialize);
+        oos.writeObject(secretForm.tf);
+        fos.close();
+        return true;
+      }
+      catch(Exception err)
+      {System.out.println("Error:"+err);}
+    }
     return false;
   }
   public static void main() {    

@@ -26,13 +26,13 @@ class DialogBox extends Frame{//класс на основе формы для �
     else
       if (evt.target==b_deserializeD)
       { 
-        File  fl=new File("tmpserial");//выполняется 
-        //десериализация из файла tmpserial
+        File  fl=new File("secret");//выполняется 
+        //десериализация из файла secret
         if (fl.exists())//проверяем, существует ли этот файл
         {tfD.setText("FileExists");
           DialogBox dialog= new DialogBox();//Создаем новую форму
           try{ 
-            fis= new FileInputStream("tmpserial");
+            fis= new FileInputStream("secret");
             ois=new ObjectInputStream(fis);
             dialog.bexitD= (Button) ois.readObject();  //Читаем из 
             //файла кнопку и выполняем приведение типа
@@ -46,8 +46,7 @@ class DialogBox extends Frame{//класс на основе формы для �
             dialog.b_deserializeD=(Button) ois.readObject();
             dialog.b_deserializeD.setBounds(10,70,100,20);
             dialog.add(dialog.b_deserializeD); 
-            dialog.tfD=(TextField) ois.readObject();//Читаем из 
-            //фала текстовое поле  и выполняем приведение типа
+            dialog.tfD=(TextField) ois.readObject();//Читаем из фала текстовое поле  и выполняем приведение типа
             dialog.tfD.setBounds(10,90,100,20);
             dialog.add(dialog.tfD); 
             dialog.show();// Отображаем десериализованную форму
@@ -63,7 +62,7 @@ class DialogBox extends Frame{//класс на основе формы для �
         if (evt.target==b_serializeD) //Кнопка для сериализации
         {
           try{ 
-            fos= new FileOutputStream("tmpserial");//Создаем файл для 
+            fos= new FileOutputStream("secret");//Создаем файл для 
             //сериализации
             oos=new ObjectOutputStream(fos);//Создаем потоковую переменную для
             //записи в файл объектов
